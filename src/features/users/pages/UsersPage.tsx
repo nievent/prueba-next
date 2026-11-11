@@ -1,5 +1,6 @@
 ﻿import { useMemo, useState } from 'react'
 import { UserList } from '../components/UserList'
+import { RecentAlbums } from '../../albums/components/RecentAlbums'
 import { UserSearch } from '../components/UserSearch'
 import { useUsers } from '../hooks/useUsers'
 import { filterUsers } from '../utils/filterUsers'
@@ -24,6 +25,7 @@ export function UsersPage() {
           <div className="section-kicker"><span className="kicker-line" /> PRUEBA TÉCNICA <span className="kicker-line" /></div>
           <div className="page-heading"><div><h1>La red social<span className="heading-accent">.</span></h1></div><div className="member-total"><span className="total-number">{isLoading ? '—' : users.length.toString().padStart(2, '0')}</span><span>miembros<br />en la comunidad</span></div></div>
           <div className="people-toolbar"><div><h2>Personas</h2><p>Descubre quién forma parte</p></div><UserSearch value={query} onChange={setQuery} /></div>
+          <RecentAlbums />
           {isLoading ? <div className="list-feedback" role="status"><span className="loading-spinner" />Cargando la comunidad…</div> : error ? (
             <div className="list-feedback has-error" role="alert"><span className="error-symbol">!</span><div><strong>No pudimos conectar</strong><p>{error}</p><button className="retry-button" onClick={reload}>Volver a intentar <span aria-hidden="true">↗</span></button></div></div>
           ) : <UserList users={filteredUsers} />}
