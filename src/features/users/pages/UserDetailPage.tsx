@@ -1,4 +1,5 @@
 import { useUser } from '../hooks/useUser'
+import { UserAlbumsSection } from '../../albums/components/UserAlbumsSection'
 import '../users.css'
 
 type UserDetailPageProps = {
@@ -43,6 +44,7 @@ export function UserDetailPage({ userId }: UserDetailPageProps) {
                 <div><dt>Website</dt><dd><a href={`https://${user.website}`} target="_blank" rel="noreferrer">{user.website}</a></dd></div>
                 <div><dt>Empresa</dt><dd>{user.company.name}</dd></div>
               </dl>
+              <UserAlbumsSection userId={user.id} />
             </article>
           )}
         </section>
