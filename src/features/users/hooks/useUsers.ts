@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { getUsers } from '../services/usersService'
 import type { User } from '../types/user'
 
@@ -9,30 +9,45 @@ type UsersState = {
 }
 
 export function useUsers() {
+  const activeController = useRef<AbortController | null>(null)
+  const requestId = useRef(0)
   const [state, setState] = useState<UsersState>({
     users: [],
     isLoading: true,
     error: null,
   })
 
-  const loadUsers = useCallback(async (signal?: AbortSignal) => {
+  const loadUsers = useCallback(async () => {
+    activeController.current?.abort()
+
+    const controller = new AbortController()
+    activeController.current = controller
+    const currentRequestId = ++requestId.current
     setState((current) => ({ ...current, isLoading: true, error: null }))
 
     try {
-      const users = await getUsers(signal)
-      if (!signal?.aborted) setState({ users, isLoading: false, error: null })
+      const users = await getUsers(controller.signal)
+      if (controller.signal.aborted || currentRequestId !== requestId.current) return
+      setState({ users, isLoading: false, error: null })
     } catch (cause) {
-      if (signal?.aborted) return
+      if (controller.signal.aborted || currentRequestId !== requestId.current) return
       const error = cause instanceof Error ? cause.message : 'Ha ocurrido un error inesperado.'
       setState((current) => ({ ...current, isLoading: false, error }))
+    } finally {
+      if (currentRequestId === requestId.current) activeController.current = null
     }
   }, [])
 
   useEffect(() => {
-    const controller = new AbortController()
-    void loadUsers(controller.signal)
-    return () => controller.abort()
+    void loadUsers()
+    return () => {
+      requestId.current += 1
+      activeController.current?.abort()
+      activeController.current = null
+    }
   }, [loadUsers])
 
-  return { ...state, reload: () => void loadUsers() }
+  const reload = useCallback(() => void loadUsers(), [loadUsers])
+
+  return { ...state, reload }
 }

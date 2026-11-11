@@ -13,7 +13,7 @@ export function UserSearch({ value, onChange }: UserSearchProps) {
         value={value}
         onChange={(event) => onChange(event.target.value)}
       />
-      {value && <button type="button" className="clear-button" aria-label="Limpiar búsqueda" onClick={() => onChange('')}></button>}
+      {value && <button type="button" className="clear-button" aria-label="Limpiar búsqueda" onClick={() => onChange('')}><span aria-hidden="true">×</span></button>}
     </label>
   )
 }
