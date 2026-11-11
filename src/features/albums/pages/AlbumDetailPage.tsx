@@ -1,4 +1,6 @@
+import { useEffect } from 'react'
 import { useAlbumDetail } from '../hooks/useAlbumDetail'
+import { addRecent } from '../utils/recentAlbums'
 import '../albums.css'
 
 type AlbumDetailPageProps = {
@@ -7,6 +9,10 @@ type AlbumDetailPageProps = {
 
 export function AlbumDetailPage({ albumId }: AlbumDetailPageProps) {
   const { album, photos, isLoading, error, reload } = useAlbumDetail(albumId)
+
+  useEffect(() => {
+    if (album) addRecent({ id: album.id, title: album.title })
+  }, [album])
 
   return (
     <main className="album-detail-page">
