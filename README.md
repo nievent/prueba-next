@@ -1,32 +1,24 @@
-# React + TypeScript + Vite
+# Comunidad: prueba técnica
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Prototipo de red social con React 19, TypeScript y Vite. Consume https://jsonplaceholder.typicode.com.
 
-Currently, two official plugins are available:
+## Funcionalidades
+- Listado de usuarios con buscador reactivo.
+- Detalle de usuario: datos, álbumes con miniatura y TODOs.
+- Galería de fotos por álbum.
+- TODOs: añadir (sin números), editar, borrar y buscar.
+- "Recién visitados": persiste entre sesiones con localStorage.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Arranque
+- `npm install` y `npm run dev`
+- Tests: `npm run test:run`
 
-## React Compiler
+## Decisiones
+- JSONPlaceholder no persiste escrituras, así que los TODOs se modifican solo en estado local.
+- Recién visitados usa localStorage (máximo 5, sin duplicados).
+- Git Flow: `feature/*` → `develop` → `release/*` → `master`, con Conventional Commits.
+- CI con GitHub Actions: lint, tests y build.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Con más tiempo
+React Router, Docker, TanStack Query, paginación de fotos, tests e2e y un hook `useAsync` genérico para quitar código repetido.
 
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
