@@ -39,6 +39,7 @@ export function useAlbumDetail(albumId: number) {
         return
       }
 
+      setState({ album, photos: [], isLoading: true, error: null })
       const photos = await getPhotosByAlbumId(album.id, controller.signal)
       if (controller.signal.aborted || currentRequestId !== requestId.current) return
       setState({ album, photos, isLoading: false, error: null })
