@@ -1,5 +1,6 @@
 import { useUser } from '../hooks/useUser'
 import { UserAlbumsSection } from '../../albums/components/UserAlbumsSection'
+import { TodoSection } from '../../todos/components/TodoSection'
 import '../users.css'
 
 type UserDetailPageProps = {
@@ -45,6 +46,7 @@ export function UserDetailPage({ userId }: UserDetailPageProps) {
                 <div><dt>Empresa</dt><dd>{user.company.name}</dd></div>
               </dl>
               <UserAlbumsSection userId={user.id} />
+              <TodoSection userId={user.id} />
             </article>
           )}
         </section>
