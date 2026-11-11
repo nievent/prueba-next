@@ -11,3 +11,13 @@ export async function getUsers(signal?: AbortSignal): Promise<User[]> {
 
   return (await response.json()) as User[]
 }
+
+export async function getUserById(id: number, signal?: AbortSignal): Promise<User | null> {
+  const response = await fetch(`${USERS_ENDPOINT}/${id}`, { signal })
+
+  if (response.status === 404) return null
+  if (!response.ok) throw new Error('No se pudo cargar el usuario.')
+
+  const user = (await response.json()) as User
+  return user.id === id ? user : null
+}
